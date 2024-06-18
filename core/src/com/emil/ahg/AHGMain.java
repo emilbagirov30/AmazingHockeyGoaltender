@@ -44,45 +44,44 @@ import java.awt.Taskbar;
 import java.util.Random;
 
 public class AHGMain implements Screen {
-	SpriteBatch batch, batchControl;
-	Texture field,goalieT,joystick,puckT,limit,start,gameOver;
-
-	static Texture joystickI;
-	OrthographicCamera camera, cameraControl;
-Sprite joystickS,joystickIS,puckS,goalieS;
-	Circle joystickPC, joystickIPC;
-	int camHeight;
-	int camWidth;
-	World world;
-	Body board,puck,goalie,boardHorizontalLower,boardHorizontalUpper,boardVerticalLeft,boardVerticalRight;
-	BodyDef boardDef,puckDef,goalieDef,boardHorizontalLowerDef,boardHorizontalUpperDef,boardVerticalLeftDef,boardVerticalRightDef;
-	Fixture boardFixture,puckFixture,goalieFixture;
-	FixtureDef boardFixtureDef,puckFixtureDef,goalieFixtureDef,boardHorizontalLowerFixtureDef,boardHorizontalUpperFixtureDef,boardVerticalLeftFixtureDef,boardVerticalRightFixtureDef;
-	ChainShape boardShape,goalieShape;
-PolygonShape boardHorizontal,boardVertical;
-Box2DDebugRenderer debugRenderer;
-int maxY = 250;
-	int minY =185;
-	float direction;
-	Random random;
+	private SpriteBatch batch, batchControl;
+	private Texture field,goalieT,joystick,puckT,limit,start,gameOver;
+	private static Texture joystickI;
+	private OrthographicCamera camera, cameraControl;
+	private Sprite joystickS,joystickIS,puckS,goalieS;
+	private Circle joystickPC, joystickIPC;
+	private int camHeight;
+	private int camWidth;
+	private World world;
+	private Body board,puck,goalie,boardHorizontalLower,boardHorizontalUpper,boardVerticalLeft,boardVerticalRight;
+	private BodyDef boardDef,puckDef,goalieDef,boardHorizontalLowerDef,boardHorizontalUpperDef,boardVerticalLeftDef,boardVerticalRightDef;
+	private Fixture boardFixture,puckFixture,goalieFixture;
+	private FixtureDef boardFixtureDef,puckFixtureDef,goalieFixtureDef,boardHorizontalLowerFixtureDef,boardHorizontalUpperFixtureDef,boardVerticalLeftFixtureDef,boardVerticalRightFixtureDef;
+	private ChainShape boardShape,goalieShape;
+	private PolygonShape boardHorizontal,boardVertical;
+	//private Box2DDebugRenderer debugRenderer;
+	private int maxY = 250;
+	private int minY =185;
+	private float direction;
+	private Random random;
 	private float timeSinceLastPuck = 2;
-	GoalieControl goalieControl;
-	CircleShape circle;
+	private GoalieControl goalieControl;
+	private CircleShape circle;
 
-	FreeTypeFontGenerator generator ;
-	FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+	private FreeTypeFontGenerator generator ;
+	private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
 
-	BitmapFont font ;
-int userScore = -1;
-int bestScore,totalGames,totalShots;
-boolean stop = false;
-	Preferences prefs;
-	Texture background,retryTexture;
-	Skin skin;
-	TextButton.TextButtonStyle styleRetry;
-	TextButton retry;
-Stage stage;
-	GameOverDialog dialogWindow;
+	private BitmapFont font ;
+	private int userScore = -1;
+	private int bestScore,totalGames,totalShots;
+	private boolean stop = false;
+	private Preferences prefs;
+	private Texture retryTexture;
+	private Skin skin;
+	private TextButton.TextButtonStyle styleRetry;
+	private TextButton retry;
+	private Stage stage;
+	private GameOverDialog dialogWindow;
 
 	@Override
 	public void show() {
