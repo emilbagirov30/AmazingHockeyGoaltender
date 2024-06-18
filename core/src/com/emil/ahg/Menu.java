@@ -22,20 +22,20 @@ import java.awt.Button;
 
 
 public class Menu extends ScreenAdapter {
-    Texture background,playTexture,title,exitTexture;
+    private Texture background,playTexture,title,exitTexture;
     private Stage stage;
-    Skin skin;
-    BitmapFont font;
-    TextButton.TextButtonStyle stylePlay,styleExit;
-    TextButton newGame,exit;
-    SpriteBatch batch;
+    private Skin skin;
+    private BitmapFont font;
+    private TextButton.TextButtonStyle stylePlay,styleExit;
+    private TextButton newGame,exit;
+    private SpriteBatch batch;
 
     float userWidth,userHeight, buttonPlayScale,titleWidth,titleHeight, buttonExitScale;
-    FreeTypeFontGenerator generator;
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    Preferences prefs;
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    private Preferences prefs;
     int bestScore,totalGames,totalShots;
-    String totalSavePercent;
+    private String totalSavePercent;
     @SuppressWarnings("DefaultLocale")
     public Menu() {
         prefs = Gdx.app.getPreferences("UserData");

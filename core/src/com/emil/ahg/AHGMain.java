@@ -46,7 +46,7 @@ import java.util.Random;
 public class AHGMain implements Screen {
 	private SpriteBatch batch, batchControl;
 	private Texture field,goalieT,joystick,puckT,limit,start,gameOver;
-	private static Texture joystickI;
+	public static Texture joystickI;
 	private OrthographicCamera camera, cameraControl;
 	private Sprite joystickS,joystickIS,puckS,goalieS;
 	private Circle joystickPC, joystickIPC;

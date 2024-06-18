@@ -11,24 +11,24 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 public class GoalieControl implements InputProcessor {
 
-    Body goalie;
-    OrthographicCamera camera;
-    Circle joystickPC,joystickIPC;
-    float currentlength;
-    Vector3 currentlengthV = new Vector3();
-    Vector2 currentlengthV2 = new Vector2();
-    Vector3 currentlengthVSol = new Vector3();
-    Vector2 currentlengthVSol2 = new Vector2();
-    float klength;
-    float resultlenght;
-    float maxXY;
-    static boolean isStart = false;
-    Vector3 lengthV = new Vector3();
-    Vector3 lengthV2 = new Vector3();
-    Vector3 touchPosV = new Vector3();
-boolean touch = false;
-    int playerSpeed = 475;
-    Sprite joystickIS;
+    private Body goalie;
+    private OrthographicCamera camera;
+    private Circle joystickPC,joystickIPC;
+    private float currentlength;
+    private Vector3 currentlengthV = new Vector3();
+    private Vector2 currentlengthV2 = new Vector2();
+    private Vector3 currentlengthVSol = new Vector3();
+    private  Vector2 currentlengthVSol2 = new Vector2();
+    private  float klength;
+    private float resultlenght;
+    private  float maxXY;
+    public static boolean isStart = false;
+    private Vector3 lengthV = new Vector3();
+    private Vector3 lengthV2 = new Vector3();
+    private  Vector3 touchPosV = new Vector3();
+    private boolean touch = false;
+    private int playerSpeed = 475;
+    private Sprite joystickIS;
 
     public GoalieControl (Body goalie, OrthographicCamera camera, Circle joystickPC, Circle  joystickIPC, Sprite joystickIS){
 this.goalie = goalie;
