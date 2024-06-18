@@ -30,11 +30,11 @@ public class Menu extends ScreenAdapter {
     private TextButton newGame,exit;
     private SpriteBatch batch;
 
-    float userWidth,userHeight, buttonPlayScale,titleWidth,titleHeight, buttonExitScale;
+    private float userWidth,userHeight, buttonPlayScale,titleWidth,titleHeight, buttonExitScale;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     private Preferences prefs;
-    int bestScore,totalGames,totalShots;
+    private int bestScore,totalGames,totalShots;
     private String totalSavePercent;
     @SuppressWarnings("DefaultLocale")
     public Menu() {
