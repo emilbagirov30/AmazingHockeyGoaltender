@@ -8,9 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SplashScreen implements Screen {
-    private SpriteBatch batch;
-    private Texture splashTexture;
-    private float userWidth,userHeight,splashScale;
+    private final SpriteBatch batch;
+    private final Texture splashTexture;
+    private final float userWidth;
+    private final float userHeight;
+    private final float splashScale;
     public SplashScreen() {
         super();
         batch = new SpriteBatch();

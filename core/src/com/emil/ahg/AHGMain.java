@@ -1,65 +1,59 @@
 package com.emil.ahg;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.net.HttpStatus;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.utils.Timer;
-import java.awt.Taskbar;
 import java.util.Random;
 
 public class AHGMain implements Screen {
 	private SpriteBatch batch, batchControl;
-	private Texture field,goalieT,joystick,puckT,limit,start,gameOver;
+	private Texture field;
+    private Texture goalieT;
+    private Texture joystick;
+    private Texture limit;
+    private Texture start;
+    private Texture gameOver;
 	public static Texture joystickI;
 	private OrthographicCamera camera, cameraControl;
 	private Sprite joystickS,joystickIS,puckS,goalieS;
 	private Circle joystickPC, joystickIPC;
 	private int camHeight;
-	private int camWidth;
-	private World world;
-	private Body board,puck,goalie,boardHorizontalLower,boardHorizontalUpper,boardVerticalLeft,boardVerticalRight;
-	private BodyDef boardDef,puckDef,goalieDef,boardHorizontalLowerDef,boardHorizontalUpperDef,boardVerticalLeftDef,boardVerticalRightDef;
+    private World world;
+	private Body puck,goalie,boardHorizontalUpper,boardVerticalLeft,boardVerticalRight;
+	private BodyDef puckDef,goalieDef,boardHorizontalUpperDef,boardVerticalLeftDef,boardVerticalRightDef;
 	private Fixture boardFixture,puckFixture,goalieFixture;
-	private FixtureDef boardFixtureDef,puckFixtureDef,goalieFixtureDef,boardHorizontalLowerFixtureDef,boardHorizontalUpperFixtureDef,boardVerticalLeftFixtureDef,boardVerticalRightFixtureDef;
-	private ChainShape boardShape,goalieShape;
+	private FixtureDef puckFixtureDef;
+    private FixtureDef boardHorizontalUpperFixtureDef;
+    private FixtureDef boardVerticalLeftFixtureDef;
+    private FixtureDef boardVerticalRightFixtureDef;
+	private ChainShape goalieShape;
 	private PolygonShape boardHorizontal,boardVertical;
-	//private Box2DDebugRenderer debugRenderer;
+
 	private int maxY = 250;
 	private int minY =185;
 	private float direction;
@@ -91,7 +85,7 @@ public class AHGMain implements Screen {
 		goalieT = new Texture("goalie.png");
 		joystick = new Texture("joystick.png");
 		joystickI = new Texture("joystick_inter.png");
-		puckT = new Texture("puck.png");
+        Texture puckT = new Texture("puck.png");
 		limit = new Texture("limit.png");
 		start = new Texture("start.png");
 		gameOver = new Texture("game_over_dialog.png");
@@ -115,9 +109,9 @@ public class AHGMain implements Screen {
 		float screenWidth = (float) Gdx.graphics.getWidth();
 		float screenHeight = (float) Gdx.graphics.getHeight();
 			camHeight = 800;
-			camWidth = (int) ((screenWidth / screenHeight) * 800.0f);
+        int camWidth = (int) ((screenWidth / screenHeight) * 800.0f);
 
-		camera.setToOrtho(false,  camWidth, camHeight);
+		camera.setToOrtho(false, camWidth, camHeight);
 		camera.zoom =0.5f;
 		camera.position.y = 700f;
 		camera.position.x = 600.0f;
@@ -156,25 +150,6 @@ public class AHGMain implements Screen {
 		boardVerticalRightFixtureDef = new FixtureDef();
 		boardVerticalRightFixtureDef.shape =boardVertical;
 		boardVerticalRight.createFixture(boardVerticalRightFixtureDef);
-
-
-		//СhainShape не видят друг друга в физическом мире
-		/*
-		boardDef = new BodyDef();
-		boardDef.type = BodyDef.BodyType.StaticBody;
-		boardDef.position.set(0.0f, 0.0f);
-		board = world.createBody(this.boardDef);
-		boardShape = new ChainShape();
-		boardFixtureDef = new FixtureDef();
-		boardShape.createChain(new Vector2[]
-				      { new Vector2(0.27f, 19.71f), new Vector2(0.27f, 0.2f),
-						new Vector2(11.72f, 0.2f), new Vector2(11.72f, 19.72f),
-						new Vector2(0.27f, 19.71f)});
-		boardFixtureDef.shape = boardShape;
-		boardFixture =  board.createFixture(boardFixtureDef);
-*/
-
-
 		puckDef = new BodyDef();
 		puckDef.type = BodyDef.BodyType.DynamicBody;
 		puckDef.position.set(convertPixelsToMeters(puckS.getX()), convertPixelsToMeters(puckS.getY()));
@@ -192,7 +167,7 @@ public class AHGMain implements Screen {
 		goalieDef.position.set(convertPixelsToMeters(goalieS.getX()),convertPixelsToMeters(goalieS.getY()));
 		goalie = world.createBody(goalieDef);
 		goalieShape = new ChainShape();
-		goalieFixtureDef = new FixtureDef();
+        FixtureDef goalieFixtureDef = new FixtureDef();
 		goalieShape.createChain(new Vector2[]{
 				new Vector2(-0.585f,-0.47f), new Vector2(-0.715f,-0.46f),
 				new Vector2(-0.715f,-0.42f), new Vector2(-0.635f,-0.36f),
@@ -226,19 +201,18 @@ public class AHGMain implements Screen {
 		Gdx.input.setInputProcessor(goalieControl);
 		random = new Random();
 		generator = new FreeTypeFontGenerator(Gdx.files.internal("ramona.ttf"));
-		  parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		  parameter.size = 50;
+		parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 50;
 		parameter.color = Color.BLACK;
 		parameter.magFilter = Texture.TextureFilter.Linear;
 		parameter.minFilter = Texture.TextureFilter.Linear;
-		  font = generator.generateFont(parameter);
-
-		  prefs = Gdx.app.getPreferences("UserData");
-         bestScore =  prefs.getInteger("best", 0);
-		 totalGames = prefs.getInteger("totalGames",0);
+		font = generator.generateFont(parameter);
+		prefs = Gdx.app.getPreferences("UserData");
+		bestScore =  prefs.getInteger("best", 0);
+		totalGames = prefs.getInteger("totalGames",0);
 		totalGames++;
-		 totalShots =  prefs.getInteger("totalShots",0);
-		 retryTexture = new Texture(Gdx.files.internal("retry.png"));
+		totalShots =  prefs.getInteger("totalShots",0);
+		retryTexture = new Texture(Gdx.files.internal("retry.png"));
 		skin = new Skin();
 		skin.add("retry",retryTexture);
 		styleRetry = new TextButton.TextButtonStyle();
@@ -258,7 +232,7 @@ public class AHGMain implements Screen {
 		});
 		stage = new Stage();
 		stage.addActor(retry);
-	     dialogWindow = new GameOverDialog(gameOver);
+		dialogWindow = new GameOverDialog(gameOver);
 	}
 
 	@Override
@@ -325,12 +299,12 @@ public class AHGMain implements Screen {
 			batch.draw(limit, 28, 119 - limit.getHeight());
 			batch.end();
 			batchControl.begin();
-			if ( GoalieControl.isStart&& userScore>=0) font.draw(batchControl, String.valueOf(userScore), 600, camHeight * 1.7f);
+			if ( GoalieControl.isStart && userScore>=0) font.draw(batchControl, String.valueOf(userScore), 600, camHeight * 1.7f);
 			joystickS.draw(batchControl);
 			joystickIS.draw(batchControl);
 			batchControl.end();
 
-		if (puckS.getY()<93){
+		    if (puckS.getY()<93){
 				stop = true;
 				Gdx.input.setInputProcessor(stage);
 				stage.getViewport().setCamera(cameraControl);
@@ -342,34 +316,19 @@ public class AHGMain implements Screen {
 				dialogWindow.render(batchControl, font, userScore, bestScore, (float) userScore / (float) (userScore + 1));
 				GoalieControl.isStart = false;
 		}
-
-
-
-	}
-
-
-
-
-
-	@Override
-	public void resize(int width, int height) {
-
 	}
 
 	@Override
-	public void pause() {
-
-	}
+	public void resize(int width, int height) {}
 
 	@Override
-	public void resume() {
-
-	}
+	public void pause() {}
 
 	@Override
-	public void hide() {
+	public void resume() {}
 
-	}
+	@Override
+	public void hide() {}
 
 	@Override
 	public void dispose () {
@@ -380,15 +339,13 @@ public class AHGMain implements Screen {
 		goalieT.dispose();
 		joystick.dispose();
 		joystickI.dispose();
-		boardShape.dispose();
 		goalieShape.dispose();
 		boardHorizontal.dispose();
 		boardVertical.dispose();
-	world.dispose();
-	generator.dispose();
-	font.dispose();
-	skin.dispose();
-
+	    world.dispose();
+	    generator.dispose();
+	    font.dispose();
+	    skin.dispose();
 	}
 	public static float convertPixelsToMeters(float pixels) {
 		return pixels / 100;
@@ -398,7 +355,7 @@ public class AHGMain implements Screen {
 		return 100 * meters;
 	}
 
-	public void createPuck (){
+	private void createPuck (){
 		puckDef = new BodyDef();
 		puckDef.type = BodyDef.BodyType.DynamicBody;
 		puckDef.position.set(convertPixelsToMeters(600), convertPixelsToMeters(1000));
@@ -421,7 +378,5 @@ public class AHGMain implements Screen {
 			prefs.putInteger("totalGames",totalGames);
 			prefs.putInteger("totalShots",totalShots+userScore+1);
 			prefs.flush();
-
 	}
-
 }

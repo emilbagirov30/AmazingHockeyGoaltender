@@ -4,7 +4,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.utils.Timer;
 
 public class GameManager extends Game {
-
     @Override
     public void create() {
         setScreen(new SplashScreen());
@@ -14,7 +13,5 @@ public class GameManager extends Game {
                 setScreen(new Menu());
             }
         }, 1);
-
     }
-
 }

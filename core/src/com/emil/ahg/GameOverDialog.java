@@ -13,10 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class GameOverDialog {
-    Texture background,retryTexture;
-Skin skin;
-    TextButton.TextButtonStyle styleRetry;
-    TextButton retry;
+    private Texture background,retryTexture;
+    private Skin skin;
+    private TextButton.TextButtonStyle styleRetry;
+    private TextButton retry;
 
     public GameOverDialog(Texture background) {
         this.background = background;
@@ -30,7 +30,8 @@ Skin skin;
 
     }
 
-    public void render(SpriteBatch batch, BitmapFont font, int userScore,int bestScore,float sv) {
+    @SuppressWarnings("DefaultLocale")
+    public void render(SpriteBatch batch, BitmapFont font, int userScore, int bestScore, float sv) {
         styleRetry.font = font;
         retry  = new TextButton("", skin,"styleRetry");
         retry.setPosition(500,  590);

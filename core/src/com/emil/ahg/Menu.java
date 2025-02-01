@@ -3,7 +3,6 @@ package com.emil.ahg;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,61 +21,57 @@ import java.awt.Button;
 
 
 public class Menu extends ScreenAdapter {
-    private Texture background,playTexture,title,exitTexture;
-    private Stage stage;
-    private Skin skin;
+    private final Texture background;
+    private final Texture playTexture;
+    private final Texture title;
+    private final Stage stage;
+    private final Skin skin;
     private BitmapFont font;
-    private TextButton.TextButtonStyle stylePlay,styleExit;
-    private TextButton newGame,exit;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
+    private final float userWidth;
+    private final float userHeight;
+    private final float titleWidth;
+    private final float titleHeight;
 
-    private float userWidth,userHeight, buttonPlayScale,titleWidth,titleHeight, buttonExitScale;
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-    private Preferences prefs;
-    private int bestScore,totalGames,totalShots;
-    private String totalSavePercent;
     @SuppressWarnings("DefaultLocale")
     public Menu() {
-        prefs = Gdx.app.getPreferences("UserData");
-        bestScore =  prefs.getInteger("best", 0);
-        totalGames = prefs.getInteger("totalGames",0);
-        totalShots =  prefs.getInteger("totalShots",0);
+        Preferences prefs = Gdx.app.getPreferences("UserData");
+        int bestScore = prefs.getInteger("best", 0);
+        int totalGames = prefs.getInteger("totalGames", 0);
+        int totalShots = prefs.getInteger("totalShots", 0);
         stage = new Stage();
         batch = new SpriteBatch();
         Gdx.input.setInputProcessor(stage);
         userWidth = Gdx.graphics.getWidth();
         userHeight = Gdx.graphics.getHeight();
-        buttonPlayScale = userWidth/2;
-        buttonExitScale = userWidth/6;
+        float buttonPlayScale = userWidth / 2;
+        float buttonExitScale = userWidth / 6;
         titleWidth = userWidth/2;
         titleHeight = titleWidth/1.37f;
-       background = new Texture(Gdx.files.internal("menu.png"));
-      playTexture = new Texture(Gdx.files.internal("play.png"));
-      exitTexture = new Texture(Gdx.files.internal("exit.png"));
-       title = new Texture(Gdx.files.internal("title.png"));
+        background = new Texture(Gdx.files.internal("menu.png"));
+        playTexture = new Texture(Gdx.files.internal("play.png"));
+        Texture exitTexture = new Texture(Gdx.files.internal("exit.png"));
+        title = new Texture(Gdx.files.internal("title.png"));
         skin = new Skin();
         skin.add("play", playTexture);
-        skin.add("exit",exitTexture);
-         font = new BitmapFont();
-
-
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("ramona.ttf"));
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        skin.add("exit", exitTexture);
+        font = new BitmapFont();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("ramona.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = (int) (userWidth/20);
         parameter.color = Color.WHITE;
         parameter.magFilter = Texture.TextureFilter.Linear;
         parameter.minFilter = Texture.TextureFilter.Linear;
         font = generator.generateFont(parameter);
         skin.add("default", font);
-        stylePlay = new TextButton.TextButtonStyle();
+        TextButton.TextButtonStyle stylePlay = new TextButton.TextButtonStyle();
         stylePlay.up = skin.newDrawable("play");
         stylePlay.down = skin.newDrawable("play", Color.DARK_GRAY);
         stylePlay.font = font;
-        skin.add("stylePlay",  stylePlay );
-        newGame  = new TextButton("", skin,"stylePlay");
-        newGame.setSize( buttonPlayScale, buttonPlayScale);
-        newGame.setPosition(userWidth/2- buttonPlayScale/2,  userHeight/2- buttonPlayScale/2);
+        skin.add("stylePlay", stylePlay);
+        TextButton newGame = new TextButton("", skin, "stylePlay");
+        newGame.setSize(buttonPlayScale, buttonPlayScale);
+        newGame.setPosition(userWidth/2- buttonPlayScale /2,  userHeight/2- buttonPlayScale /2);
 
         newGame.addListener(new ClickListener() {
             @Override
@@ -85,14 +80,14 @@ public class Menu extends ScreenAdapter {
                 game.setScreen(new AHGMain());
             }
         });
-        styleExit = new TextButton.TextButtonStyle();
+        TextButton.TextButtonStyle styleExit = new TextButton.TextButtonStyle();
         styleExit.up = skin.newDrawable("exit");
         styleExit.down = skin.newDrawable("exit", Color.DARK_GRAY);
         styleExit.font = font;
-            skin.add("styleExit",  styleExit );
-       exit  = new TextButton("", skin,"styleExit");
-        exit.setSize( buttonExitScale, buttonExitScale);
-        exit.setPosition(userWidth- buttonExitScale-10,  10);
+            skin.add("styleExit", styleExit);
+        TextButton exit = new TextButton("", skin, "styleExit");
+        exit.setSize(buttonExitScale, buttonExitScale);
+        exit.setPosition(userWidth- buttonExitScale -10,  10);
 
         exit.addListener(new ClickListener() {
             @Override
@@ -101,17 +96,18 @@ public class Menu extends ScreenAdapter {
             }
         });
 
-        stage.addActor( newGame);
-        stage.addActor( exit);
-        if (totalShots>0) totalSavePercent = String.format("%.2f",(float) (totalShots-totalGames)/totalShots*100);
+        stage.addActor(newGame);
+        stage.addActor(exit);
+        String totalSavePercent;
+        if (totalShots >0) totalSavePercent = String.format("%.2f",(float) (totalShots - totalGames)/ totalShots *100);
         else totalSavePercent = "0,00";
         Label.LabelStyle labelStyle = new Label.LabelStyle();
         labelStyle.font = font;
         Label bestScoreLabel = new Label("Best score: " + bestScore, labelStyle);
         Label totalSaveLabel = new Label("Total save%: " + totalSavePercent, labelStyle);
 
-        bestScoreLabel.setPosition(userWidth/2-4*parameter.size, userHeight/2 - 0.75f*buttonPlayScale);
-        totalSaveLabel.setPosition(userWidth/2-4*parameter.size, userHeight/2 - 0.75f*buttonPlayScale-1.5f*parameter.size);
+        bestScoreLabel.setPosition(userWidth/2-4* parameter.size, userHeight/2 - 0.75f* buttonPlayScale);
+        totalSaveLabel.setPosition(userWidth/2-4* parameter.size, userHeight/2 - 0.75f* buttonPlayScale -1.5f* parameter.size);
         stage.addActor(bestScoreLabel);
         stage.addActor(totalSaveLabel);
 
@@ -124,8 +120,6 @@ public class Menu extends ScreenAdapter {
         batch.begin();
         batch.draw(background, 0, 0,userWidth,userHeight);
         batch.draw(title, userWidth/2-titleWidth/2, userHeight/1.15f-titleHeight/2,titleWidth,titleHeight);
-        //font.draw(batch,"Best score: " + bestScore,newGame.getX(),newGame.getY()-80);
-       // font.draw(batch,"Total save%: " +  totalSavePercent,newGame.getX(),newGame.getY()-150);
         batch.end();
         stage.act(delta);
         stage.draw();
